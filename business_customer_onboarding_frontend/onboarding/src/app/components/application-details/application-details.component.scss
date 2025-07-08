@@ -1,0 +1,76 @@
+.application-details {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+    margin-left: 16px;
+  }
+  
+  .status-approved {
+    background-color: #d4edda;
+    color: #155724;
+    margin-left: 16px;
+  }
+  
+  .status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+    margin-left: 16px;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .form-row mat-form-field {
+    flex: 1;
+  }
+  
+  .view-mode .info-row {
+    display: flex;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .view-mode .label {
+    font-weight: 500;
+    min-width: 200px;
+    color: #666;
+  }
+  
+  .view-mode .value {
+    flex: 1;
+    color: #333;
+  }
+  
+  .director-card, .owner-card {
+    margin-bottom: 16px;
+  }
+  
+  .processing-section {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }

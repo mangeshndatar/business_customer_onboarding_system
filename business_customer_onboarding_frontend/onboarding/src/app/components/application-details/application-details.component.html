@@ -1,0 +1,282 @@
+<div class="application-details" *ngIf="application">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Application Details - {{ application.id }}
+        <mat-chip [class]="'status-' + application.status">
+          {{ application.status | titlecase }}
+        </mat-chip>
+      </mat-card-title>
+      <mat-card-subtitle>
+        Submitted: {{ application.submissionDate | date : "full" }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab label="Company Information">
+          <div class="tab-content">
+            <form [formGroup]="applicationForm" *ngIf="isEditMode">
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Legal Name of Entity</mat-label>
+                  <input matInput formControlName="legalName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Legal Structure</mat-label>
+                  <mat-select formControlName="legalStructure">
+                    <mat-option value="Limited">Limited Company</mat-option>
+                    <mat-option value="Trust">Trust</mat-option>
+                    <mat-option value="Fund">Fund</mat-option>
+                    <mat-option value="Partnership">Partnership</mat-option>
+                    <mat-option value="Corporation">Corporation</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Country of Incorporation</mat-label>
+                  <mat-select formControlName="countryOfIncorporation">
+                    <mat-option value="US">United States</mat-option>
+                    <mat-option value="UK">United Kingdom</mat-option>
+                    <mat-option value="CA">Canada</mat-option>
+                    <mat-option value="AU">Australia</mat-option>
+                    <mat-option value="SG">Singapore</mat-option>
+                    <mat-option value="HK">Hong Kong</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Business Registration Number</mat-label>
+                  <input
+                    matInput
+                    formControlName="businessRegistrationNumber"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Tax ID</mat-label>
+                  <input matInput formControlName="taxId" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Industry Type</mat-label>
+                  <mat-select formControlName="industryType">
+                    <mat-option value="Finance">Finance</mat-option>
+                    <mat-option value="Real Estate">Real Estate</mat-option>
+                    <mat-option value="Services">Services</mat-option>
+                    <mat-option value="Technology">Technology</mat-option>
+                    <mat-option value="Healthcare">Healthcare</mat-option>
+                    <mat-option value="Manufacturing">Manufacturing</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Contact Email</mat-label>
+                  <input matInput formControlName="contactEmail" type="email" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Primary Contact</mat-label>
+                  <input matInput formControlName="primaryContact" />
+                </mat-form-field>
+              </div>
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Annual Turnover</mat-label>
+                  <input
+                    matInput
+                    formControlName="estimatedAnnualTurnover"
+                    type="number"
+                  />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Monthly Volume</mat-label>
+                  <input
+                    matInput
+                    formControlName="expectedMonthlyVolume"
+                    type="number"
+                  />
+                </mat-form-field>
+              </div>
+            </form>
+
+            <div *ngIf="!isEditMode" class="view-mode">
+              <div class="info-row">
+                <span class="label">Legal Name:</span>
+                <span class="value">{{ application.legalName }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Legal Structure:</span>
+                <span class="value">{{ application.legalStructureType }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Country of Incorporation:</span>
+                <span class="value">{{
+                  application.countryOfIncorporation
+                }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Business Registration Number:</span>
+                <span class="value">{{
+                  application.businessRegistrationNumber
+                }}</span>
+              </div>
+              <!-- <div class="info-row">
+                  <span class="label">Tax ID:</span>
+                  <span class="value">{{application.taxId}}</span>
+                </div> -->
+              <div class="info-row">
+                <span class="label">Industry Type:</span>
+                <span class="value">{{ application.industryType }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Contact Email:</span>
+                <span class="value">{{ application.contactEmail }}</span>
+              </div>
+              <!-- <div class="info-row">
+                  <span class="label">Primary Contact:</span>
+                  <span class="value">{{application.primaryContact}}</span>
+                </div> -->
+              <div class="info-row">
+                <span class="label">Annual Turnover:</span>
+                <span class="value">{{
+                  application.estimatedAnnualTurnover | currency
+                }}</span>
+              </div>
+              <!-- <div class="info-row">
+                  <span class="label">Monthly Volume:</span>
+                  <span class="value">{{application.expectedMonthlyVolume | currency}}</span>
+                </div> -->
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Directors">
+          <div class="tab-content">
+            <h3>Directors ({{ application.directors.length }})</h3>
+            <mat-card
+              *ngFor="let director of application.directors; let i = index"
+              class="director-card"
+            >
+              <mat-card-header>
+                <mat-card-title>Director {{ i + 1 }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="info-row">
+                  <span class="label">Name:</span>
+                  <span class="value">{{ director.name }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">National ID:</span>
+                  <span class="value">{{ director.nationalIdPassport }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Country of Residence:</span>
+                  <span class="value">{{ director.countryOfResidence }}</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Beneficial Owners">
+          <div class="tab-content">
+            <h3>
+              Ultimate Beneficial Owners ({{
+                application.ultimateBeneficialOwners
+              }})
+            </h3>
+            <mat-card
+              *ngFor="
+                let owner of application.ultimateBeneficialOwners;
+                let i = index
+              "
+              class="owner-card"
+            >
+              <mat-card-header>
+                <mat-card-title>UBO {{ i + 1 }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="info-row">
+                  <span class="label">Name:</span>
+                  <span class="value">{{ owner.name }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">National ID:</span>
+                  <span class="value">{{ owner.countryOfResidence }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Ownership Percentage:</span>
+                  <span class="value">{{ owner.ownershipPercentage }}%</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Country of Residence:</span>
+                  <span class="value">{{ owner.countryOfResidence }}</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Documents">
+          <div class="tab-content">
+            <h3>Supporting Documents ({{ application.documents.length }})</h3>
+            <mat-list>
+              <mat-list-item *ngFor="let doc of application.documents">
+                <mat-icon matListIcon>description</mat-icon>
+                <h4 matLine>{{ doc.fileName }}</h4>
+                <p matLine>
+                  {{ doc.fileSize | number }} bytes -
+                  {{ doc.uploadDate | date }}
+                </p>
+                <button mat-icon-button (click)="viewDocument(doc.filePath)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+      <div class="processing-section" *ngIf="application.status === 'PENDING'">
+        <h3>Processing Actions</h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Processing Notes</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="processingNotes"
+            rows="3"
+            placeholder="Add notes about the processing decision..."
+            required="true"
+          ></textarea>
+        </mat-form-field>
+
+        <div class="action-buttons">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="approveApplication()"
+          >
+            <mat-icon>check_circle</mat-icon>
+            Approve
+          </button>
+          <button mat-raised-button color="warn" (click)="rejectApplication()">
+            <mat-icon>cancel</mat-icon>
+            Reject
+          </button>
+          <button mat-button (click)="toggleEditMode()" *ngIf="!isEditMode">
+            <mat-icon>edit</mat-icon>
+            Edit Application
+          </button>
+          <button mat-button (click)="saveChanges()" *ngIf="isEditMode">
+            <mat-icon>save</mat-icon>
+            Save Changes
+          </button>
+          <button mat-button (click)="cancelEdit()" *ngIf="isEditMode">
+            <mat-icon>cancel</mat-icon>
+            Cancel Edit
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

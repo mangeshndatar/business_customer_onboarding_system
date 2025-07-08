@@ -1,0 +1,485 @@
+<div class="onboarding-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Business Customer Onboarding</mat-card-title>
+      <mat-card-subtitle
+        >Please complete all sections to submit your
+        application</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="onboardingForm" (ngSubmit)="onSubmit()">
+        <!-- Business Information Section -->
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Business Information</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-section">
+            <mat-form-field appearance="outline">
+              <mat-label>Legal Name of Entity</mat-label>
+              <input matInput formControlName="legalName" required />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('legalName')?.touched &&
+                  onboardingForm.get('legalName')?.hasError('required')
+                "
+              >
+                Legal name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Type of Legal Structure</mat-label>
+              <mat-select formControlName="legalStructureType" required>
+                <mat-option
+                  *ngFor="let structure of legalStructures"
+                  [value]="structure"
+                >
+                  {{ structure }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('legalStructureType')?.touched &&
+                  onboardingForm.get('legalStructureType')?.hasError('required')
+                "
+              >
+                Legal structure is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Country of Incorporation</mat-label>
+              <mat-select formControlName="countryOfIncorporation" required>
+                <mat-option *ngFor="let country of countries" [value]="country">
+                  {{ country }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('countryOfIncorporation')?.touched &&
+                  onboardingForm
+                    .get('countryOfIncorporation')
+                    ?.hasError('required')
+                "
+              >
+                Country of incorporation is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Business Registration Number</mat-label>
+              <input
+                matInput
+                formControlName="businessRegistrationNumber"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('businessRegistrationNumber')?.touched &&
+                  onboardingForm
+                    .get('businessRegistrationNumber')
+                    ?.hasError('required')
+                "
+              >
+                Business registration number is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Tax Identification Number</mat-label>
+              <input
+                matInput
+                formControlName="taxIdentificationNumber"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('taxIdentificationNumber')?.touched &&
+                  onboardingForm
+                    .get('taxIdentificationNumber')
+                    ?.hasError('required')
+                "
+              >
+                Tax identification number is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Industry Type</mat-label>
+              <mat-select formControlName="industryType" required>
+                <mat-option
+                  *ngFor="let industry of industryTypes"
+                  [value]="industry"
+                >
+                  {{ industry }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('industryType')?.touched &&
+                  onboardingForm.get('industryType')?.hasError('required')
+                "
+              >
+                Industry type is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Contact Information Section -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Contact Information</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-section">
+            <mat-form-field appearance="outline">
+              <mat-label>Primary Contact Person</mat-label>
+              <input matInput formControlName="primaryContactPerson" required />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('primaryContactPerson')?.touched &&
+                  onboardingForm
+                    .get('primaryContactPerson')
+                    ?.hasError('required')
+                "
+              >
+                Primary contact person is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Email</mat-label>
+              <input
+                matInput
+                type="email"
+                formControlName="contactEmail"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('contactEmail')?.touched &&
+                  onboardingForm.get('contactEmail')?.hasError('required')
+                "
+              >
+                Contact email is required
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('contactEmail')?.touched &&
+                  onboardingForm.get('contactEmail')?.hasError('email')
+                "
+              >
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Financial Information Section -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Financial Information</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-section">
+            <mat-form-field appearance="outline">
+              <mat-label>Estimated Annual Turnover</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="estimatedAnnualTurnover"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('estimatedAnnualTurnover')?.touched &&
+                  onboardingForm
+                    .get('estimatedAnnualTurnover')
+                    ?.hasError('required')
+                "
+              >
+                Estimated annual turnover is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Expected Monthly Transaction Volume</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="expectedMonthlyTransactionVolume"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  onboardingForm.get('expectedMonthlyTransactionVolume')
+                    ?.touched &&
+                  onboardingForm
+                    .get('expectedMonthlyTransactionVolume')
+                    ?.hasError('required')
+                "
+              >
+                Expected monthly transaction volume is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Directors Section -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Directors</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-section">
+            <div formArrayName="directors">
+              <div
+                *ngFor="let director of directors.controls; let i = index"
+                [formGroupName]="i"
+                class="director-form"
+              >
+                <h4>Director {{ i + 1 }}</h4>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name</mat-label>
+                  <input matInput formControlName="name" required />
+                  <mat-error
+                    *ngIf="
+                      director.get('name')?.touched &&
+                      director.get('name')?.hasError('required')
+                    "
+                  >
+                    Full name is required
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>National ID/Passport</mat-label>
+                  <input
+                    matInput
+                    formControlName="nationalIdPassport"
+                    required
+                  />
+                  <mat-error
+                    *ngIf="
+                      director.get('nationalIdPassport')?.touched &&
+                      director.get('nationalIdPassport')?.hasError('required')
+                    "
+                  >
+                    National ID/Passport is required
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Country of Residence</mat-label>
+                  <mat-select formControlName="countryOfResidence" required>
+                    <mat-option
+                      *ngFor="let country of countries"
+                      [value]="country"
+                    >
+                      {{ country }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      director.get('countryOfResidence')?.touched &&
+                      director.get('countryOfResidence')?.hasError('required')
+                    "
+                  >
+                    Country of residence is required
+                  </mat-error>
+                </mat-form-field>
+
+                <button
+                  type="button"
+                  mat-raised-button
+                  color="warn"
+                  (click)="removeDirector(i)"
+                  *ngIf="directors.length > 1"
+                >
+                  Remove Director
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              (click)="addDirector()"
+            >
+              Add Director
+            </button>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Ultimate Beneficial Owners Section -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Ultimate Beneficial Owners</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-section">
+            <div formArrayName="ultimateBeneficialOwners">
+              <div
+                *ngFor="
+                  let ubo of ultimateBeneficialOwners.controls;
+                  let i = index
+                "
+                [formGroupName]="i"
+                class="ubo-form"
+              >
+                <h4>UBO {{ i + 1 }}</h4>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name</mat-label>
+                  <input matInput formControlName="name" required />
+                  <mat-error
+                    *ngIf="
+                      ultimateBeneficialOwners.get('name')?.touched &&
+                      ultimateBeneficialOwners.get('name')?.hasError('required')
+                    "
+                  >
+                    Full name is required
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>National ID/Passport</mat-label>
+                  <input
+                    matInput
+                    formControlName="nationalIdPassport"
+                    required
+                  />
+                  <mat-error
+                    *ngIf="
+                      ultimateBeneficialOwners.get('nationalIdPassport')
+                        ?.touched &&
+                      ultimateBeneficialOwners
+                        .get('nationalIdPassport')
+                        ?.hasError('required')
+                    "
+                  >
+                    National ID/Passport is required
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Ownership Percentage</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="ownershipPercentage"
+                    required
+                    min="0"
+                    max="100"
+                  />
+                  <mat-error
+                    *ngIf="
+                      ubo.get('ownershipPercentage')?.touched &&
+                      ubo.get('ownershipPercentage')?.hasError('required')
+                    "
+                  >
+                    Ownership percentage is required
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Country of Residence</mat-label>
+                  <mat-select formControlName="countryOfResidence" required>
+                    <mat-option
+                      *ngFor="let country of countries"
+                      [value]="country"
+                    >
+                      {{ country }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      ubo.get('countryOfResidence')?.touched &&
+                      ubo.get('countryOfResidence')?.hasError('required')
+                    "
+                  >
+                    Country of residence is required
+                  </mat-error>
+                </mat-form-field>
+
+                <button
+                  type="button"
+                  mat-raised-button
+                  color="warn"
+                  (click)="removeUbo(i)"
+                  *ngIf="ultimateBeneficialOwners.length > 1"
+                >
+                  Remove UBO
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              (click)="addUbo()"
+            >
+              Add UBO
+            </button>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Document Upload Section -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Document Upload</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="form-section">
+            <app-file-upload
+              (documentUploaded)="onDocumentUploaded($event)"
+            ></app-file-upload>
+
+            <div
+              *ngIf="uploadedDocuments.length > 0"
+              class="uploaded-documents"
+            >
+              <h4>Uploaded Documents:</h4>
+              <ul>
+                <li *ngFor="let doc of uploadedDocuments">
+                  {{ doc.fileName }} ({{ doc.fileSize }} bytes)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Submit Button -->
+        <div class="submit-section">
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            [disabled]="!onboardingForm.valid || isSubmitting"
+          >
+            <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
+            Submit Application
+          </button>
+        </div>
+
+        <!-- Application ID Display -->
+        <div *ngIf="applicationId" class="application-id">
+          <mat-card>
+            <mat-card-content>
+              <h3>Application Submitted Successfully!</h3>
+              <p>
+                Your Application ID: <strong>{{ applicationId }}</strong>
+              </p>
+              <p>Please save this ID for future reference.</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
