@@ -115,20 +115,20 @@ export class DocumentUploadComponent {
   //   });
   // }
 
-  deleteDocument(document: Document) {
-    if (
-      confirm(`Are you sure you want to delete ${document.originalFileName}?`)
-    ) {
-      this.documentService.deleteDocument(document.id).subscribe({
-        next: () => {
-          // this.loadDocuments();
-        },
-        error: (error) => {
-          this.errorMessage = error;
-        },
-      });
-    }
-  }
+  // deleteDocument(document: Document) {
+  //   if (
+  //     confirm(`Are you sure you want to delete ${document.originalFileName}?`)
+  //   ) {
+  //     this.documentService.deleteDocument(document.id).subscribe({
+  //       next: () => {
+  //         // this.loadDocuments();
+  //       },
+  //       error: (error) => {
+  //         this.errorMessage = error;
+  //       },
+  //     });
+  //   }
+  // }
 
   formatFileSize(bytes: number): string {
     if (bytes === 0) return '0 Bytes';

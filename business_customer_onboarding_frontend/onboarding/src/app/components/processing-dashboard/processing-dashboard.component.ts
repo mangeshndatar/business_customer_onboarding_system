@@ -80,15 +80,13 @@ export class ProcessingDashboardComponent {
   }
 
   viewApplication(id: string) {
-    console.log('id', id);
     this.router.navigate(['/applications/', id]);
   }
 
-  editApplication(id: string) {
-    this.router.navigate(['/applications', id], {
-      // queryParams: { edit: 'true' },
-    });
-  }
+  // editApplication(id: string) {
+  //   this.router.navigate(['/applications', id], {
+  //   });
+  // }
 
-  submitApplication(id: any) {}
+  // submitApplication(id: any) {}
 }

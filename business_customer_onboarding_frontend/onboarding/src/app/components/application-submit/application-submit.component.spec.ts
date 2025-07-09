@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ApplicationSubmitComponent } from './application-submit.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('ApplicationSubmitComponent', () => {
   let component: ApplicationSubmitComponent;
@@ -8,9 +9,9 @@ describe('ApplicationSubmitComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApplicationSubmitComponent]
-    })
-    .compileComponents();
+      imports: [ApplicationSubmitComponent],
+      providers: [MatDialogRef],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ApplicationSubmitComponent);
     component = fixture.componentInstance;

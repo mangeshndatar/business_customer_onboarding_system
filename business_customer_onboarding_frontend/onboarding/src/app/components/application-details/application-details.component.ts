@@ -25,7 +25,6 @@ import { HttpResponse } from '@angular/common/http';
     FormsModule,
     SharedAngularMaterialModule,
     MatChip,
-
     ReactiveFormsModule,
     MatListModule,
   ],
@@ -58,8 +57,6 @@ export class ApplicationDetailsComponent {
         if (this.application) {
           this.initializeForm();
           this.isEditMode = editMode;
-        } else {
-          // this.router.navigate(['/processing']);
         }
       });
   }

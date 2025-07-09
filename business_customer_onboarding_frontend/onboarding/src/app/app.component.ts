@@ -16,12 +16,4 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  // currentRole: 'applicant' | 'officer' = 'applicant';
-
-  constructor(private router: Router) {}
-
-  navigateByRole() {
-    // this.router.navigate([`/${this.currentRole}`]);
-  }
-}
+export class AppComponent {}

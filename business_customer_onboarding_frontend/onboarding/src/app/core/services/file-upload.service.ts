@@ -41,14 +41,8 @@ export class FileUploadService {
     return this.http
       .get(`${this.apiUrl}/documents/${documentId}/download`, {
         responseType: 'blob',
-        observe: 'response', // This allows you to access headers
+        observe: 'response',
       })
-      .pipe(catchError(this.handleError));
-  }
-
-  deleteDocument(documentId: number): Observable<any> {
-    return this.http
-      .delete(`${this.apiUrl}/${documentId}`)
       .pipe(catchError(this.handleError));
   }
 
