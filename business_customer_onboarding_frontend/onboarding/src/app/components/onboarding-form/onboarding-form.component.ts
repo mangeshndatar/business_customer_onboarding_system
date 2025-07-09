@@ -16,8 +16,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { SharedAngularMaterialModule } from '../../core/shared/angular.material.module';
 import { Document } from '../../core/models/application.model';
-import { FileUploadComponent } from '../file-upload/file-upload.component';
-import { ApplicationSubmitComponent } from '../application-submit/application-submit.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -28,7 +26,6 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     CommonModule,
     SharedAngularMaterialModule,
-    FileUploadComponent,
   ],
   templateUrl: './onboarding-form.component.html',
   styleUrl: './onboarding-form.component.scss',
