@@ -40,6 +40,7 @@ export class DocumentUploadComponent {
   }
 
   ngOnInit() {
+    //
     // this.loadDocuments();
   }
 
