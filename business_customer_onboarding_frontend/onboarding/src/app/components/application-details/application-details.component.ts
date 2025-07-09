@@ -35,7 +35,7 @@ export class ApplicationDetailsComponent {
   applicationForm!: FormGroup;
   isEditMode = false;
   processingNotes = '';
-
+  checkRequired = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -114,13 +114,19 @@ export class ApplicationDetailsComponent {
   }
 
   approveApplication() {
-    if (this.application && this.application.id) {
+    if (this.processingNotes.length == 0) {
+      this.checkRequired = true;
+      return;
+    } else if (this.application && this.application.id) {
       this.updateTheStatus(this.application, ApplicationStatus.APPROVED);
     }
   }
 
   rejectApplication() {
-    if (this.application && this.application.id) {
+    if (this.processingNotes.length == 0) {
+      this.checkRequired = true;
+      return;
+    } else if (this.application && this.application.id) {
       this.updateTheStatus(this.application, ApplicationStatus.REJECTED);
     }
   }
@@ -138,13 +144,19 @@ export class ApplicationDetailsComponent {
         })
         .subscribe((res: any) => {
           console.log(res);
+
           if (res) {
             this.application.status = status;
             this.snackBar.open(`Application ${status} successfully`, 'Close', {
               duration: 3000,
+              panelClass: ['success-snackbar'],
             });
           }
+          this.back();
         });
     }
+  }
+  back() {
+    this.router.navigate(['/processing']);
   }
 }

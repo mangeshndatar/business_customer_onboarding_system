@@ -2,13 +2,16 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
+        <button mat-icon-button (click)="back()" matTooltip="View Details">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
         Application Details - {{ application.id }}
         <mat-chip [class]="'status-' + application.status">
           {{ application.status | titlecase }}
         </mat-chip>
       </mat-card-title>
       <mat-card-subtitle>
-        Submitted: {{ application.submissionDate | date : "full" }}
+        Submitted: {{ application.createdAt | date : "short" }}
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -23,7 +26,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Legal Structure</mat-label>
-                  <mat-select formControlName="legalStructure">
+                  <mat-select formControlName="legalStructureType">
                     <mat-option value="Limited">Limited Company</mat-option>
                     <mat-option value="Trust">Trust</mat-option>
                     <mat-option value="Fund">Fund</mat-option>
@@ -180,11 +183,7 @@
 
         <mat-tab label="Beneficial Owners">
           <div class="tab-content">
-            <h3>
-              Ultimate Beneficial Owners ({{
-                application.ultimateBeneficialOwners
-              }})
-            </h3>
+            <h3>Ultimate Beneficial Owners</h3>
             <mat-card
               *ngFor="
                 let owner of application.ultimateBeneficialOwners;
@@ -263,10 +262,10 @@
             <mat-icon>cancel</mat-icon>
             Reject
           </button>
-          <button mat-button (click)="toggleEditMode()" *ngIf="!isEditMode">
+          <!-- <button mat-button (click)="toggleEditMode()" *ngIf="!isEditMode">
             <mat-icon>edit</mat-icon>
             Edit Application
-          </button>
+          </button> -->
           <button mat-button (click)="saveChanges()" *ngIf="isEditMode">
             <mat-icon>save</mat-icon>
             Save Changes

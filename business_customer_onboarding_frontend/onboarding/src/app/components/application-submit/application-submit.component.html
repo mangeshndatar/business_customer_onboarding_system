@@ -1,0 +1,21 @@
+<div class="application-id">
+  <mat-card>
+    <mat-card-content>
+      <h3>Application Submitted Successfully!</h3>
+      <p>
+        Your Application ID: <strong>{{ applicationId }}</strong>
+      </p>
+      <p>Please save this ID for future reference.</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        style="width: 100%; background-color: black; color: white; padding: 5px"
+        mat-button
+        color="primary"
+        (click)="onNoClick()"
+      >
+        Close
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -10,17 +10,18 @@
       <mat-icon class="upload-icon">cloud_upload</mat-icon>
       <h3>Upload Documents</h3>
       <p>Drag and drop files here or click to select</p>
-      <p class="file-info">Supported formats: PDF, JPEG, PNG (Max 10MB)</p>
+      <p class="file-info">Supported formats: TXT</p>
 
       <input
         type="file"
         #fileInput
         (change)="onFileSelect($event)"
-        accept=".pdf,.jpg,.jpeg,.png"
+        accept=".txt"
         style="display: none"
       />
 
       <button
+        type="button"
         mat-raised-button
         color="primary"
         (click)="fileInput.click()"

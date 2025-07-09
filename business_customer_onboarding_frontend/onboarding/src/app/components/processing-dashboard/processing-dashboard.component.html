@@ -58,7 +58,7 @@
           <ng-container matColumnDef="legalStructure">
             <mat-header-cell *matHeaderCellDef>Legal Structure</mat-header-cell>
             <mat-cell *matCellDef="let application">{{
-              application.legalStructure
+              application.legalStructureType
             }}</mat-cell>
           </ng-container>
 
@@ -96,10 +96,16 @@
             </mat-cell>
           </ng-container>
 
-          <ng-container matColumnDef="submissionDate">
-            <mat-header-cell *matHeaderCellDef>Submission Date</mat-header-cell>
+          <ng-container matColumnDef="createdDate">
+            <mat-header-cell *matHeaderCellDef>Created Date</mat-header-cell>
             <mat-cell *matCellDef="let application">{{
-              application.submissionDate | date
+              application.createdAt | date : "short"
+            }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="updatedDate">
+            <mat-header-cell *matHeaderCellDef>Submitted Date</mat-header-cell>
+            <mat-cell *matCellDef="let application">{{
+              application.updatedAt | date : "short"
             }}</mat-cell>
           </ng-container>
 

@@ -61,23 +61,24 @@ export class FileUploadComponent {
     }
 
     const allowedTypes = [
-      'application/pdf',
-      'image/jpeg',
-      'image/png',
-      'image/jpg',
+      'application/txt',
+      // 'application/pdf',
+      // 'image/jpeg',
+      // 'image/png',
+      // 'image/jpg',
     ];
-    if (!allowedTypes.includes(file.type)) {
-      this.snackBar.open('Only PDF, JPEG, and PNG files are allowed', 'Close', {
-        duration: 5000,
-        panelClass: ['error-snackbar'],
-      });
-      return;
-    }
+    // if (!allowedTypes.includes(file.type)) {
+    //   this.snackBar.open('Only TXT files are allowed', 'Close', {
+    //     duration: 5000,
+    //     panelClass: ['error-snackbar'],
+    //   });
+    //   return;
+    // }
 
     this.isUploading = true;
 
-    this.fileUploadService.uploadFile(file).subscribe({
-      next: (response) => {
+    this.fileUploadService.uploadFile(file, '12').subscribe({
+      next: (response: any) => {
         const document: Document = {
           fileName: response.fileName,
           filePath: response.filePath,

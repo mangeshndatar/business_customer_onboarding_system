@@ -37,7 +37,8 @@ export class ProcessingDashboardComponent {
     'businessRegistrationNumber',
     'industryType',
     'status',
-    'submissionDate',
+    'createdDate',
+    'updatedDate',
     'actions',
   ];
 
