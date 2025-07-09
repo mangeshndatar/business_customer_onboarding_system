@@ -5,6 +5,7 @@ import {
   HttpEvent,
   HttpHeaders,
   HttpRequest,
+  HttpResponse,
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 export interface FileUploadResponse {
@@ -17,34 +18,30 @@ export interface FileUploadResponse {
   providedIn: 'root',
 })
 export class FileUploadService {
-  private apiUrl = 'http://localhost:8081/api/documents';
+  private apiUrl = 'http://localhost:8081/api/applications';
 
   constructor(private http: HttpClient) {}
 
   uploadFile(file: File, applicationId: string): Observable<Document> {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append(
-      'applicationId',
-      new Blob([JSON.stringify(applicationId.toString())], {
-        type: 'application/json',
-      })
-    );
+    formData.append('files', file);
+
     return this.http
-      .post<Document>(`${this.apiUrl}/upload`, formData)
+      .post<Document>(`${this.apiUrl}/${applicationId}/documents`, formData)
       .pipe(catchError(this.handleError));
   }
 
-  getDocumentsByApplication(applicationId: string): Observable<Document[]> {
+  getDocumentsByApplication(applicationId: number): Observable<Document[]> {
     return this.http
       .get<Document[]>(`${this.apiUrl}/application/${applicationId}`)
       .pipe(catchError(this.handleError));
   }
 
-  downloadFile(documentId: number): Observable<Blob> {
+  downloadFile(documentId: number): Observable<HttpResponse<Blob>> {
     return this.http
-      .get(`${this.apiUrl}/download/${documentId}`, {
+      .get(`${this.apiUrl}/documents/${documentId}/download`, {
         responseType: 'blob',
+        observe: 'response', // This allows you to access headers
       })
       .pipe(catchError(this.handleError));
   }

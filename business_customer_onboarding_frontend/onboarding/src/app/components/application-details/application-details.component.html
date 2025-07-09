@@ -219,10 +219,24 @@
         <mat-tab label="Documents">
           <div class="tab-content">
             <h3>Supporting Documents ({{ application.documents.length }})</h3>
-            <mat-list>
+            <ul style="max-height: 200px; overflow-y: scroll">
+              <li *ngFor="let doc of application.documents">
+                <button mat-icon-button (click)="viewDocument(doc.id)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <h6>{{ doc.fileName }}</h6>
+                <p>
+                  {{ doc.fileSize | number }} bytes -
+                  {{ doc.uploadDate | date }}
+                </p>
+
+                <hr />
+              </li>
+            </ul>
+            <!-- <mat-list>
               <mat-list-item *ngFor="let doc of application.documents">
                 <mat-icon matListIcon>description</mat-icon>
-                <h4 matLine>{{ doc.fileName }}</h4>
+                <h6 matLine>{{ doc.fileName }}</h6>
                 <p matLine>
                   {{ doc.fileSize | number }} bytes -
                   {{ doc.uploadDate | date }}
@@ -231,7 +245,7 @@
                   <mat-icon>visibility</mat-icon>
                 </button>
               </mat-list-item>
-            </mat-list>
+            </mat-list> -->
           </div>
         </mat-tab>
       </mat-tab-group>

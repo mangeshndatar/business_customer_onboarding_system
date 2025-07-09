@@ -1,6 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { FileUploadService } from '../../core/services/file-upload.service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { ApplicationSubmitComponent } from '../application-submit/application-submit.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 export interface Document {
   id: number;
   applicationId: number;
@@ -19,16 +22,22 @@ export interface Document {
   styleUrl: './document-upload.component.scss',
 })
 export class DocumentUploadComponent {
-  @Input() applicationId: string = 'APP-1752031312448-425BAA66'; // Default application ID
+  @Input() applicationId: string = '';
   @Output() fileUploaded = new EventEmitter<Document>();
+  readonly dialog = inject(MatDialog);
 
   selectedFile: File | null = null;
   uploading = false;
   uploadProgress = 0;
   errorMessage = '';
   documents: Document[] = [];
-
-  constructor(private documentService: FileUploadService) {}
+  constructor(
+    private documentService: FileUploadService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.applicationId = this.route.snapshot.params['id'];
+  }
 
   ngOnInit() {
     // this.loadDocuments();
@@ -57,15 +66,16 @@ export class DocumentUploadComponent {
           this.uploadProgress = 100;
           this.selectedFile = null;
           this.fileUploaded.emit(document);
-          this.loadDocuments();
+          this.openDialog();
+          // this.loadDocuments();
 
           // Reset file input
-          const fileInput = document.getElementById(
-            'fileInput'
-          ) as HTMLInputElement;
-          if (fileInput) {
-            fileInput.value = '';
-          }
+          // const fileInput = document.getElementById(
+          //   'fileInput'
+          // ) as HTMLInputElement;
+          // if (fileInput) {
+          //   fileInput.value = '';
+          // }
         },
         error: (error) => {
           this.uploading = false;
@@ -75,34 +85,34 @@ export class DocumentUploadComponent {
       });
   }
 
-  loadDocuments() {
-    this.documentService
-      .getDocumentsByApplication(this.applicationId)
-      .subscribe({
-        next: (documents: any) => {
-          this.documents = documents;
-        },
-        error: (error) => {
-          this.errorMessage = error;
-        },
-      });
-  }
+  // loadDocuments() {
+  //   this.documentService
+  //     .getDocumentsByApplication(this.applicationId)
+  //     .subscribe({
+  //       next: (documents: any) => {
+  //         this.documents = documents;
+  //       },
+  //       error: (error) => {
+  //         this.errorMessage = error;
+  //       },
+  //     });
+  // }
 
-  downloadDocument(document: any) {
-    this.documentService.downloadFile(document.id).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = document.originalFileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      },
-      error: (error) => {
-        this.errorMessage = error;
-      },
-    });
-  }
+  // downloadDocument(document: any) {
+  //   this.documentService.downloadFile(document.id).subscribe({
+  //     next: (blob) => {
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.href = url;
+  //       a.download = document.originalFileName;
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //     },
+  //     error: (error) => {
+  //       this.errorMessage = error;
+  //     },
+  //   });
+  // }
 
   deleteDocument(document: Document) {
     if (
@@ -110,7 +120,7 @@ export class DocumentUploadComponent {
     ) {
       this.documentService.deleteDocument(document.id).subscribe({
         next: () => {
-          this.loadDocuments();
+          // this.loadDocuments();
         },
         error: (error) => {
           this.errorMessage = error;
@@ -125,5 +135,18 @@ export class DocumentUploadComponent {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ApplicationSubmitComponent, {
+      data: { name: this.applicationId },
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log('The dialog was closed');
+      this.router.navigate(['/document-upload']);
+      if (result !== undefined) {
+      }
+    });
   }
 }

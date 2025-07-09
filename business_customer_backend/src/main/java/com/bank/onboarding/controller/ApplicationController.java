@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/applications")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ApplicationController {
     
 	@Autowired
@@ -80,7 +80,7 @@ public class ApplicationController {
     
     @PostMapping("/{id}/documents")
     public ResponseEntity<List<DocumentDTO>> uploadDocuments(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam("files") List<MultipartFile> files) {
         List<DocumentDTO> documents = documentService.uploadDocuments(id, files);
         return ResponseEntity.ok(documents);

@@ -9,7 +9,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: OnboardingFormComponent },
   { path: 'processing', component: ProcessingDashboardComponent },
   {
-    path: 'document-upload',
+    path: 'document-upload/:id',
     component: DocumentUploadComponent,
   },
   {

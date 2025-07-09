@@ -15,6 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService } from '../../core/services/application.service';
 import { MatListModule } from '@angular/material/list';
 import { ApplicationStatus } from '../../core/enums/legalstructure.enum';
+import { FileUploadService } from '../../core/services/file-upload.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-application-details',
@@ -41,7 +43,8 @@ export class ApplicationDetailsComponent {
     private router: Router,
     private fb: FormBuilder,
     private applicationService: ApplicationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fileUpload: FileUploadService
   ) {}
 
   ngOnInit() {
@@ -131,8 +134,34 @@ export class ApplicationDetailsComponent {
     }
   }
 
-  viewDocument(url: string) {
-    window.open(url, '_blank');
+  viewDocument(id: any) {
+    console.log('doc id', id);
+    this.fileUpload
+      .downloadFile(id)
+      .subscribe((response: HttpResponse<Blob>) => {
+        const blob = response.body;
+        if (blob) {
+          const contentDisposition = response.headers.get(
+            'Content-Disposition'
+          );
+          let filename = `document_${id}`;
+
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+            if (filenameMatch) {
+              filename = filenameMatch[1];
+            }
+          }
+
+          const blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, '_blank');
+
+          setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+          }, 100);
+        }
+      });
+    // window.open(url, '_blank');
   }
 
   updateTheStatus(application: Application, status: ApplicationStatus) {

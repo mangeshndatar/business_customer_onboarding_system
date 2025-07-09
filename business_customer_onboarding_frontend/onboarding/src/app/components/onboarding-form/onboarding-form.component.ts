@@ -167,7 +167,9 @@ export class OnboardingFormComponent {
           this.onboardingForm.reset();
           this.uploadedDocuments = [];
           this.isSubmitting = false;
-          this.openDialog();
+          // this.openDialog();
+
+          this.router.navigate(['/document-upload', this.applicationId]);
         },
         error: (error) => {
           // this.snackBar.open(
@@ -230,17 +232,5 @@ export class OnboardingFormComponent {
       return `${controlName} must be less than or equal to ${control.errors?.['max'].max}`;
     }
     return '';
-  }
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ApplicationSubmitComponent, {
-      data: { name: this.applicationId },
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      console.log('The dialog was closed');
-      this.router.navigate(['/document-upload']);
-      if (result !== undefined) {
-      }
-    });
   }
 }

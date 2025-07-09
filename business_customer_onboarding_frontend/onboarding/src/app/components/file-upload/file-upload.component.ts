@@ -77,7 +77,7 @@ export class FileUploadComponent {
 
     this.isUploading = true;
 
-    this.fileUploadService.uploadFile(file, '12').subscribe({
+    this.fileUploadService.uploadFile(file, '1').subscribe({
       next: (response: any) => {
         const document: Document = {
           fileName: response.fileName,
