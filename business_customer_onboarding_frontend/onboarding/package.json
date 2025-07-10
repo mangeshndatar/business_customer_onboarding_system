@@ -25,9 +25,8 @@
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0",
     "@stomp/stompjs": "^7.0.0",
-    "sockjs-client": "^1.6.1"
-
-
+    "sockjs-client": "^1.6.1",
+    "ngx-toastr": "^16.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.0.2",

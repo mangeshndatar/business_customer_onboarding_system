@@ -2,14 +2,15 @@ package com.bank.onboarding.service;
 
 import com.bank.onboarding.dto.*;
 import com.bank.onboarding.entity.Application;
+import com.bank.onboarding.entity.ApplicationModel;
 import com.bank.onboarding.entity.Director;
 import com.bank.onboarding.entity.UltimateBeneficialOwner;
 import com.bank.onboarding.enums.ApplicationStatus;
 import com.bank.onboarding.exception.BusinessException;
-import com.bank.onboarding.kafka.KafkaProducerService;
 import com.bank.onboarding.repository.ApplicationRepository;
 import com.bank.onboarding.repository.DirectorRepository;
 import com.bank.onboarding.repository.UboRepository;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,10 @@ public class ApplicationService {
     private UboRepository uboRepository;
     @Autowired
     private NotificationService notificationService;
-
     @Autowired
     private KafkaProducerService kafkaProducerService;
+
+
 
     public ApplicationResponseDTO submitApplication(ApplicationRequestDTO requestDTO) {
         // Check for duplicate business registration number
@@ -98,14 +100,13 @@ public class ApplicationService {
 
         uboRepository.saveAll(ubos);
 
+        ApplicationModel applicationModel = new ApplicationModel();
+        applicationModel.setApplicationId(savedApplication.getApplicationId());
+        applicationModel.setStatus(savedApplication.getStatus());
         // Send notification to processing team
         notificationService.notifyProcessingTeam(savedApplication);
-        kafkaProducerService.sendApplication(application);
+        kafkaProducerService.sendMessage(applicationModel);
 
-        kafkaProducerService.sendNotification(ApplicationEvent.builder()
-                .applicationId(application.getApplicationId())
-                .status(application.getStatus())
-                .build());
 
         return convertToResponseDTO(savedApplication);
     }
