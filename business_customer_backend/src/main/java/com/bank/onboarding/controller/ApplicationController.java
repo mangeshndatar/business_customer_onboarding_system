@@ -3,11 +3,9 @@ package com.bank.onboarding.controller;
 import com.bank.onboarding.dto.ApplicationRequestDTO;
 import com.bank.onboarding.dto.ApplicationResponseDTO;
 import com.bank.onboarding.dto.DocumentDTO;
-import com.bank.onboarding.entity.Notification;
 import com.bank.onboarding.enums.ApplicationStatus;
 import com.bank.onboarding.service.ApplicationService;
 import com.bank.onboarding.service.DocumentService;
-import com.bank.onboarding.service.NotificationProducer;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +34,7 @@ public class ApplicationController {
     private ApplicationService applicationService;
 	@Autowired
     private DocumentService documentService;
-	@Autowired
-    private  NotificationProducer notificationProducer;
+
 	
     @PostMapping
     public ResponseEntity<ApplicationResponseDTO> submitApplication(

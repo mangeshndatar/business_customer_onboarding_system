@@ -53,4 +53,7 @@ export class ApplicationService {
       processing
     );
   }
+  getLatestApplication(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest`);
+  }
 }
