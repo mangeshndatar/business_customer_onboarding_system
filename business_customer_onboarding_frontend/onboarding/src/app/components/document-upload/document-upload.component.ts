@@ -145,9 +145,6 @@ export class DocumentUploadComponent {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       console.log('The dialog was closed');
-      this.router.navigate(['/document-upload']);
-      if (result !== undefined) {
-      }
     });
   }
 }

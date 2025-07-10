@@ -9,6 +9,10 @@ import { ApplicationService } from '../../core/services/application.service';
 import { MatChip } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { MatBadge } from '@angular/material/badge';
+import { WebSocketService } from '../../web-socket.service';
+import { ApplicationEvent } from '../../core/models/application.event';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SharedService } from '../../shared.service';
 
 @Component({
   selector: 'app-processing-dashboard',
@@ -28,6 +32,7 @@ export class ProcessingDashboardComponent {
   applications?: Response;
   messages: string[] = [];
   dataSource = new MatTableDataSource<Application>();
+  appNotificationData: ApplicationEvent[] = [];
 
   displayedColumns: string[] = [
     'id',
@@ -49,7 +54,9 @@ export class ProcessingDashboardComponent {
 
   constructor(
     private applicationService: ApplicationService,
-    private router: Router
+    private router: Router,
+    private wsService: WebSocketService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit() {
@@ -60,10 +67,7 @@ export class ProcessingDashboardComponent {
         this.dataSource.data = applications.content;
         this.updateStats();
       });
-
-    // this.applicationService.getMessages().subscribe(messages => {
-    //   this.messages = messages;
-    // });
+    this.getMessages();
   }
 
   private updateStats() {
@@ -83,10 +87,12 @@ export class ProcessingDashboardComponent {
     this.router.navigate(['/applications/', id]);
   }
 
-  // editApplication(id: string) {
-  //   this.router.navigate(['/applications', id], {
-  //   });
-  // }
-
-  // submitApplication(id: any) {}
+  getMessages() {
+    console.log('get messsaged');
+    this.sharedService.getMessages().subscribe((data) => {
+      console.log('msgs', data, 'notific' + this.appNotificationData);
+      this.appNotificationData.push(data);
+      this.sharedService.saveNotificationData(this.appNotificationData);
+    });
+  }
 }

@@ -6,6 +6,7 @@ import com.bank.onboarding.entity.Director;
 import com.bank.onboarding.entity.UltimateBeneficialOwner;
 import com.bank.onboarding.enums.ApplicationStatus;
 import com.bank.onboarding.exception.BusinessException;
+import com.bank.onboarding.kafka.KafkaProducerService;
 import com.bank.onboarding.repository.ApplicationRepository;
 import com.bank.onboarding.repository.DirectorRepository;
 import com.bank.onboarding.repository.UboRepository;
@@ -35,7 +36,12 @@ public class ApplicationService {
     private  UboRepository uboRepository;
 	@Autowired
     private  NotificationService notificationService;
-    
+	
+
+
+	@Autowired
+	private  KafkaProducerService kafkaProducerService;
+	
     public ApplicationResponseDTO submitApplication(ApplicationRequestDTO requestDTO) {
         // Check for duplicate business registration number
         if (applicationRepository.existsByBusinessRegistrationNumber(requestDTO.getBusinessRegistrationNumber())) {
@@ -96,6 +102,12 @@ public class ApplicationService {
         
         // Send notification to processing team
         notificationService.notifyProcessingTeam(savedApplication);
+        kafkaProducerService.sendApplication(ApplicationQueuePayload.mapTo(application));
+		
+		kafkaProducerService.sendNotification(ApplicationEvent.builder()
+				.applicationId(application.getApplicationId())
+				.status(application.getStatus())
+				.build());
         
         return convertToResponseDTO(savedApplication);
     }

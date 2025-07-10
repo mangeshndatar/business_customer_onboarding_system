@@ -133,18 +133,21 @@
     <mat-card-header>
       <mat-card-title>
         Message Queue
-        <mat-icon matBadge="{{ messages.length }}" matBadgeColor="accent"
+        <mat-icon
+          matBadge="{{ appNotificationData.length }}"
+          matBadgeColor="accent"
           >notifications</mat-icon
         >
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="messages-container">
-        <div *ngFor="let message of messages.slice(-5)" class="message-item">
+        <div *ngFor="let message of appNotificationData" class="message-item">
           <mat-icon>info</mat-icon>
-          <span>{{ message }}</span>
+          <span>{{ message.applicationId }}</span>
+          <span>{{ message.status }}</span>
         </div>
-        <div *ngIf="messages.length === 0" class="no-messages">
+        <div *ngIf="appNotificationData.length === 0" class="no-messages">
           No messages in queue
         </div>
       </div>
