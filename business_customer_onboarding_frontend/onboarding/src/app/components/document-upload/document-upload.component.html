@@ -1,0 +1,60 @@
+<div class="file-upload-container">
+  <h3>File Upload</h3>
+
+  <!-- Upload Section -->
+  <div class="upload-section">
+    <div class="file-input-container">
+      <input
+        type="file"
+        id="fileInput"
+        (change)="onFileSelected($event)"
+        accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+      />
+      <label for="fileInput" class="file-input-label"> Choose File </label>
+      <span class="file-name">{{
+        selectedFile?.name || "No file selected"
+      }}</span>
+    </div>
+
+    <button
+      class="upload-btn"
+      (click)="onUpload()"
+      [disabled]="!selectedFile || uploading"
+    >
+      {{ uploading ? "Uploading..." : "Upload" }}
+    </button>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-container" *ngIf="uploading">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Documents List -->
+  <div class="documents-list" *ngIf="documents.length > 0">
+    <h4>Uploaded Documents</h4>
+    <div class="document-item" *ngFor="let document of documents">
+      <div class="document-info">
+        <span class="document-name">{{ document.originalFileName }}</span>
+        <span class="document-size">{{
+          formatFileSize(document.fileSize)
+        }}</span>
+        <span class="document-date">{{
+          document.uploadedAt | date : "short"
+        }}</span>
+      </div>
+      <div class="document-actions">
+        <!-- <button class="download-btn" (click)="downloadDocument(document)">
+          Download
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>

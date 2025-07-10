@@ -1,5 +1,8 @@
 package com.bank.onboarding.service;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.bank.onboarding.dto.DocumentDTO;
 import com.bank.onboarding.entity.Application;
 import com.bank.onboarding.entity.Document;
@@ -7,6 +10,8 @@ import com.bank.onboarding.exception.BusinessException;
 import com.bank.onboarding.repository.ApplicationRepository;
 import com.bank.onboarding.repository.DocumentRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -29,14 +34,20 @@ import java.util.stream.Collectors;
 @Transactional
 public class DocumentService {
     
+	@Autowired
     private  DocumentRepository documentRepository;
+    
+    @Autowired
     private  ApplicationRepository applicationRepository;
     
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
     
-    public List<DocumentDTO> uploadDocuments(Long applicationId, List<MultipartFile> files) {
-        Application application = applicationRepository.findById(applicationId)
+	private static final Logger log = LoggerFactory.getLogger(DocumentService.class);
+
+    
+    public List<DocumentDTO> uploadDocuments(String applicationId, List<MultipartFile> files) {
+        Application application = applicationRepository.findByApplicationId(applicationId)
                 .orElseThrow(() -> new BusinessException("Application not found"));
         
         // Create upload directory if it doesn't exist
@@ -48,6 +59,8 @@ public class DocumentService {
                 throw new BusinessException("Could not create upload directory");
             }
         }
+        
+        log.info("reached::");
         
         List<Document> documents = files.stream()
                 .map(file -> uploadSingleDocument(application, file))

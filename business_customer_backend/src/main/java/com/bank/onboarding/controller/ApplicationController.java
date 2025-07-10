@@ -3,9 +3,12 @@ package com.bank.onboarding.controller;
 import com.bank.onboarding.dto.ApplicationRequestDTO;
 import com.bank.onboarding.dto.ApplicationResponseDTO;
 import com.bank.onboarding.dto.DocumentDTO;
+import com.bank.onboarding.entity.Notification;
 import com.bank.onboarding.enums.ApplicationStatus;
 import com.bank.onboarding.service.ApplicationService;
 import com.bank.onboarding.service.DocumentService;
+import com.bank.onboarding.service.NotificationProducer;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -26,14 +29,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/applications")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ApplicationController {
     
 	@Autowired
     private ApplicationService applicationService;
 	@Autowired
     private DocumentService documentService;
-    
+	@Autowired
+    private  NotificationProducer notificationProducer;
+	
     @PostMapping
     public ResponseEntity<ApplicationResponseDTO> submitApplication(
             @Valid @RequestBody ApplicationRequestDTO requestDTO) {
@@ -57,7 +62,7 @@ public class ApplicationController {
     
     @GetMapping
     public ResponseEntity<Page<ApplicationResponseDTO>> getAllApplications(
-            @PageableDefault(size = 10) Pageable pageable) {
+            @PageableDefault(size = 30) Pageable pageable) {
         Page<ApplicationResponseDTO> applications = applicationService.getAllApplications(pageable);
         return ResponseEntity.ok(applications);
     }
@@ -80,7 +85,7 @@ public class ApplicationController {
     
     @PostMapping("/{id}/documents")
     public ResponseEntity<List<DocumentDTO>> uploadDocuments(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam("files") List<MultipartFile> files) {
         List<DocumentDTO> documents = documentService.uploadDocuments(id, files);
         return ResponseEntity.ok(documents);

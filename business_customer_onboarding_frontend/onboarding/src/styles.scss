@@ -1,13 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
+
 .success-snackbar {
-    background-color: #4caf50;
-    color: white;
+    background-color: #4caf50 !important;
+    color: white !important;
   }
   
   .error-snackbar {
-    background-color: #f44336;
-    color: white;
+    background-color: #f44336 !important;
+    color: white !important;
   }
   
   html, body { 
@@ -59,3 +60,7 @@
     background-color: #f5f5f5;
   }
   
+  .mat-mdc-simple-snack-bar{
+    background-color: red !important;
+    border: none;
+  }

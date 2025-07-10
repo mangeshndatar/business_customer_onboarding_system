@@ -23,6 +23,7 @@ export interface Application {
   directors: Director[];
   ultimateBeneficialOwners: UltimateBeneficialOwner[];
   documents: Document[];
+  createdAt?: Date;
 }
 export interface Director {
   id?: number;

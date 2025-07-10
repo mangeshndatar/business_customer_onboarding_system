@@ -15,6 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService } from '../../core/services/application.service';
 import { MatListModule } from '@angular/material/list';
 import { ApplicationStatus } from '../../core/enums/legalstructure.enum';
+import { FileUploadService } from '../../core/services/file-upload.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-application-details',
@@ -23,7 +25,6 @@ import { ApplicationStatus } from '../../core/enums/legalstructure.enum';
     FormsModule,
     SharedAngularMaterialModule,
     MatChip,
-
     ReactiveFormsModule,
     MatListModule,
   ],
@@ -35,13 +36,14 @@ export class ApplicationDetailsComponent {
   applicationForm!: FormGroup;
   isEditMode = false;
   processingNotes = '';
-
+  checkRequired = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private applicationService: ApplicationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fileUpload: FileUploadService
   ) {}
 
   ngOnInit() {
@@ -55,8 +57,6 @@ export class ApplicationDetailsComponent {
         if (this.application) {
           this.initializeForm();
           this.isEditMode = editMode;
-        } else {
-          // this.router.navigate(['/processing']);
         }
       });
   }
@@ -114,19 +114,51 @@ export class ApplicationDetailsComponent {
   }
 
   approveApplication() {
-    if (this.application && this.application.id) {
+    if (this.processingNotes.length == 0) {
+      this.checkRequired = true;
+      return;
+    } else if (this.application && this.application.id) {
       this.updateTheStatus(this.application, ApplicationStatus.APPROVED);
     }
   }
 
   rejectApplication() {
-    if (this.application && this.application.id) {
+    if (this.processingNotes.length == 0) {
+      this.checkRequired = true;
+      return;
+    } else if (this.application && this.application.id) {
       this.updateTheStatus(this.application, ApplicationStatus.REJECTED);
     }
   }
 
-  viewDocument(url: string) {
-    window.open(url, '_blank');
+  viewDocument(id: any) {
+    console.log('doc id', id);
+    this.fileUpload
+      .downloadFile(id)
+      .subscribe((response: HttpResponse<Blob>) => {
+        const blob = response.body;
+        if (blob) {
+          const contentDisposition = response.headers.get(
+            'Content-Disposition'
+          );
+          let filename = `document_${id}`;
+
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+            if (filenameMatch) {
+              filename = filenameMatch[1];
+            }
+          }
+
+          const blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, '_blank');
+
+          setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+          }, 100);
+        }
+      });
+    // window.open(url, '_blank');
   }
 
   updateTheStatus(application: Application, status: ApplicationStatus) {
@@ -138,13 +170,19 @@ export class ApplicationDetailsComponent {
         })
         .subscribe((res: any) => {
           console.log(res);
+
           if (res) {
             this.application.status = status;
             this.snackBar.open(`Application ${status} successfully`, 'Close', {
               duration: 3000,
+              panelClass: ['success-snackbar'],
             });
           }
+          this.back();
         });
     }
+  }
+  back() {
+    this.router.navigate(['/processing']);
   }
 }

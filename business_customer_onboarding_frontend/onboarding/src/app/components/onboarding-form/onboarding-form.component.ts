@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -16,7 +16,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { SharedAngularMaterialModule } from '../../core/shared/angular.material.module';
 import { Document } from '../../core/models/application.model';
-import { FileUploadComponent } from '../file-upload/file-upload.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-onboarding-form',
@@ -25,7 +26,6 @@ import { FileUploadComponent } from '../file-upload/file-upload.component';
     ReactiveFormsModule,
     CommonModule,
     SharedAngularMaterialModule,
-    FileUploadComponent,
   ],
   templateUrl: './onboarding-form.component.html',
   styleUrl: './onboarding-form.component.scss',
@@ -60,11 +60,13 @@ export class OnboardingFormComponent {
   uploadedDocuments: Document[] = [];
   isSubmitting = false;
   applicationId: string | null = null;
+  readonly dialog = inject(MatDialog);
 
   constructor(
     private fb: FormBuilder,
     private applicationService: ApplicationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.onboardingForm = this.createForm();
   }
@@ -151,27 +153,30 @@ export class OnboardingFormComponent {
       this.applicationService.submitApplication(application).subscribe({
         next: (response) => {
           this.applicationId = response.applicationId!;
-          this.snackBar.open(
-            `Application submitted successfully! Application ID: ${this.applicationId}`,
-            'Close',
-            {
-              duration: 10000,
-              panelClass: ['success-snackbar'],
-            }
-          );
+          // this.snackBar.open(
+          //   `Application submitted successfully! Application ID: ${this.applicationId}`,
+          //   'Close',
+          //   {
+          //     duration: 10000,
+          //     panelClass: ['success-snackbar'],
+          //   }
+          // );
           this.onboardingForm.reset();
           this.uploadedDocuments = [];
           this.isSubmitting = false;
+          // this.openDialog();
+
+          this.router.navigate(['/document-upload', this.applicationId]);
         },
         error: (error) => {
-          this.snackBar.open(
-            'Failed to submit application. Please try again.',
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
-          );
+          // this.snackBar.open(
+          //   'Failed to submit application. Please try again.',
+          //   'Close',
+          //   {
+          //     duration: 5000,
+          //     panelClass: ['error-snackbar'],
+          //   }
+          // );
           this.isSubmitting = false;
         },
       });
