@@ -14,7 +14,11 @@ For FrontEnd :
 1. `npm install`
 2. `ng serve`
 
-
+For Kafka
+1. `bin/zookeeper-server-start.sh config/zookeeper.properties`
+2. `bin/kafka-server-start.sh config/server.properties`
+3. `bin/kafka-topics.sh --create --topic application-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1`
+4. 
 # Demo Screenshot
 
 <img width="1266" alt="Screenshot 2025-07-08 at 4 31 53 PM" src="https://github.com/user-attachments/assets/0a7431b8-d24e-44d7-a115-2bf57fb3920a" />
