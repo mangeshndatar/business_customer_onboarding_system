@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+// @import '~ngx-toastr/toastr.css';
 
-
+@import '../node_modules/ngx-toastr/toastr.css';
 .success-snackbar {
     background-color: #4caf50 !important;
     color: white !important;
@@ -64,3 +65,20 @@
     background-color: red !important;
     border: none;
   }
+  /* Custom toastr styles */
+.toast-success {
+  background-color: #28a745 !important;
+}
+
+.toast-error {
+  background-color: #dc3545 !important;
+}
+
+.toast-info {
+  background-color: #17a2b8 !important;
+}
+
+.toast-warning {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}

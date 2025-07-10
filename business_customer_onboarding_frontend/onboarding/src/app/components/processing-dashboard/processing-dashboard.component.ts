@@ -9,10 +9,9 @@ import { ApplicationService } from '../../core/services/application.service';
 import { MatChip } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { MatBadge } from '@angular/material/badge';
-import { WebSocketService } from '../../web-socket.service';
+import { WebSocketService } from '../../core/services/web-socket.service';
 import { ApplicationEvent } from '../../core/models/application.event';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SharedService } from '../../shared.service';
 
 @Component({
   selector: 'app-processing-dashboard',
@@ -55,8 +54,7 @@ export class ProcessingDashboardComponent {
   constructor(
     private applicationService: ApplicationService,
     private router: Router,
-    private wsService: WebSocketService,
-    private sharedService: SharedService
+    private wsService: WebSocketService
   ) {}
 
   ngOnInit() {
@@ -89,10 +87,5 @@ export class ProcessingDashboardComponent {
 
   getMessages() {
     console.log('get messsaged');
-    this.sharedService.getMessages().subscribe((data) => {
-      console.log('msgs', data, 'notific' + this.appNotificationData);
-      this.appNotificationData.push(data);
-      this.sharedService.saveNotificationData(this.appNotificationData);
-    });
   }
 }
