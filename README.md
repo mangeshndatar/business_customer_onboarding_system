@@ -18,7 +18,36 @@ For Kafka
 1. `bin/zookeeper-server-start.sh config/zookeeper.properties`
 2. `bin/kafka-server-start.sh config/server.properties`
 3. `bin/kafka-topics.sh --create --topic application-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1`
-4. 
+
+Flow of the work :
+- There are two section for the the application
+- Application Portal - Where use can submit the workflow.
+- Processing Dashboard - Use can see alll the workflows and actions on the workflows.
+
+# Application Portal
+- We have some fields of user to can enter it
+  - Bussiness Information
+  - Contact
+  - Financial
+  - Directos
+  - Beneficial Owners
+  - Documents.
+ - Once we submit the application we have to upload the document.
+ - After Uploading document we can see the confirmation by using `kafka notification`.
+
+# Processing Dashboard    
+- Use can see the Dashboard to view
+  - Total Application
+  - Pending
+  - Approved
+  - Rejected
+- We can the all application in table format where use can click on `Action Column`
+- After clicking on action , New Application will be opened.
+- We have actions to perform the application to approve or reject.
+- after approving user will redirected to the `Processing Dashboard` again.
+
+    
+
 # Demo Screenshot
 
 <img width="1266" alt="Screenshot 2025-07-08 at 4 31 53 PM" src="https://github.com/user-attachments/assets/0a7431b8-d24e-44d7-a115-2bf57fb3920a" />
